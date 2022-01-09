@@ -112,6 +112,112 @@ async function run() {
 
 
 
+        // POST API buyer 
+        app.post('/buyer', async (req, res) => {
+            const user = req.body;
+            const result = await buyerCollection.insertOne(user);
+            console.log(result);
+            res.json(result);
+        });
+
+        // GET API buyer
+        // buyer
+        // GET API for buyer
+        app.get('/buyer', async (req, res) => {
+            const user = buyerCollection.find({});
+            const getUser = await user.toArray();
+            console.log(getUser);
+            res.send(getUser);
+        });
+
+
+        // approved the status
+        app.put("/buyer/:id", async (req, res) => {
+            const id = req.params.id;
+            const data = req.body;
+
+            const filter = { _id: ObjectId(id) };
+            const updateDoc = {
+                $set: data,
+            };
+            const result = await buyerCollection.updateOne(filter, updateDoc);
+            res.json(result);
+        });
+
+
+        // approved the status
+        app.put("/buyer/:id", async (req, res) => {
+            const id = req.params.id;
+            const data = req.body;
+
+            const filter = { _id: ObjectId(id) };
+            const updateDoc = {
+                $set: data,
+            };
+            const result = await buyerCollection.updateOne(filter, updateDoc);
+            res.json(result);
+        });
+
+
+
+
+        // DELETE API
+        app.delete('/buyer/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await buyerCollection.deleteOne(query);
+            res.json(result);
+        })
+
+
+        // post api for buyer
+        app.post('/buyer', async (req, res) => {
+
+            const user = req.body;
+            console.log('hit the post buyer api', user);
+            // res.send('post hitted');
+            const answer = await buyerCollection.insertOne(user);
+            console.log(answer);
+            res.json(answer)
+        });
+
+
+        // GET API for buyer
+        app.get('/buyer', async (req, res) => {
+            const user = buyerCollection.find({});
+            const getUser = await user.toArray();
+            console.log(getUser);
+            res.send(getUser);
+        });
+
+
+        // approved the status
+        app.put("/buyer/:id", async (req, res) => {
+            const id = req.params.id;
+            const data = req.body;
+
+            const filter = { _id: ObjectId(id) };
+            const updateDoc = {
+                $set: data,
+            };
+            const result = await buyerCollection.updateOne(filter, updateDoc);
+            res.json(result);
+        });
+
+
+        // DELETE API
+        app.delete('/buyer/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await buyerCollection.deleteOne(query);
+            res.json(result);
+        })
+
+
+
+
+
+
 
 
 
