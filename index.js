@@ -4,6 +4,7 @@ const port = process.env.PORT || 5000;
 
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config();
 app.use(cors());
 app.use(express.json());
@@ -16,6 +17,9 @@ async function run() {
         console.log("database connnecteddd");
         const database = client.db('eventDB');
         const servicesCollection = database.collection('services');
+        const usersCollection = database.collection('users');
+        const buyerCollection = database.collection('buyer');
+        const reviewCollection = database.collection('review');
 
 
 
@@ -27,7 +31,14 @@ async function run() {
             res.send(services);
         });
 
-
+        // GET Single Service
+        app.get('/services/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log('getting specific service', id);
+            const query = { _id: ObjectId(id) };
+            const service = await servicesCollection.findOne(query);
+            res.json(service);
+        })
 
 
         // POST API
@@ -37,6 +48,34 @@ async function run() {
             const result = await servicesCollection.insertOne(service);
             console.log(result);
             res.json(result)
+        });
+
+        //  delete services  manage all products
+        app.delete('/services/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await servicesCollection.deleteOne(query);
+            console.log(result);
+
+            res.json(result);
+        })
+
+
+        // POST API for review
+        app.post('/review', async (req, res) => {
+            const service = req.body;
+            console.log('hit the post api', service);
+
+            const result = await reviewCollection.insertOne(service);
+            console.log(result);
+            res.json(result)
+        });
+
+        // GET API for review
+        app.get('/review', async (req, res) => {
+            const cursor = reviewCollection.find({});
+            const services = await cursor.toArray();
+            res.send(services);
         });
 
 
